@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
 class MenuOptions extends StatelessWidget {
+  const MenuOptions({super.key});
+
   static const buttonSpacing = 8.0;
+  static const buttonPadding = 12.0;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textStyle = theme.textTheme.displayMedium;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -15,16 +21,27 @@ class MenuOptions extends StatelessWidget {
               onPressed: () {
                 print('Melody Spark');
               },
-              child: const Text('Melody Spark'),
+              child: Padding(
+                padding: const EdgeInsets.all(buttonPadding),
+                child: Text(
+                  'Melody Spark',
+                  style: textStyle,
+                ),
+              ),
             )),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: buttonSpacing),
           child: ElevatedButton(
-            onPressed: () {
-              print('Tuner');
-            },
-            child: const Text('Tuner'),
-          ),
+              onPressed: () {
+                print('Tuner');
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(buttonPadding),
+                child: Text(
+                  'Tuner',
+                  style: textStyle,
+                ),
+              )),
         ),
         Padding(
           padding: const EdgeInsets.only(
@@ -33,7 +50,13 @@ class MenuOptions extends StatelessWidget {
             onPressed: () {
               print('Learn the Fretboard');
             },
-            child: const Text('Learn the Fretboard'),
+            child: Padding(
+              padding: const EdgeInsets.all(buttonPadding),
+              child: Text(
+                'Learn The Fretboard',
+                style: textStyle,
+              ),
+            ),
           ),
         ),
       ],

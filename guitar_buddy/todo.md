@@ -2,9 +2,9 @@
 
 ### Home screen
 - Sleek looking background
-- Buttons for modes listed below
+- ~~Buttons for modes listed below~~
 - Background music (John Frusciante?)
-- Settings icon
+- ~~Settings icon~~
 - Settings page
 
 ### Melody Spark
