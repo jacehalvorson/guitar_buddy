@@ -1,16 +1,9 @@
-# guitar_buddy
+# Guitar Buddy (in progress)
 
-A new Flutter project.
+## About
+Various tools to learn about and improve playing guitar.
+- **Melody Spark** - Given a backing track and tempo, highlight notes that will sound good over each chord in a loop.
+- **Tuner** - Tune your guitar (and other instruments) to various standard tunings.
+- **Learn the Fretboard** - A game to improve knowledge of the notes on the fretboard inspired by Fretuoso.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+See previous iteration of this project using React Native at https://github.com/jacehalvorson/melody_spark/
