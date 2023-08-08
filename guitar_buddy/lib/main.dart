@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-import 'menu_options.dart';
+import 'menu.dart';
 import 'settings.dart';
 import 'types.dart';
 
@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Guitar Buddy',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal.shade300),
+        colorScheme: const ColorScheme.dark(
+          primary: Color.fromRGBO(20, 20, 20, 1),
+          secondary: Color.fromARGB(255, 31, 131, 212),
+        ),
         useMaterial3: true,
       ),
       home: const HomePage(title: 'Guitar Buddy'),
@@ -39,11 +42,19 @@ class _HomePageState extends State<HomePage> {
 
   void _openSettings() {
     setState(() {
-      // Grey out everything and open settings
-      (_currentAppState == AppState.settings)
-          ? _currentAppState = AppState.menu
-          : _currentAppState = AppState.settings;
-      print(_currentAppState);
+      // Blur everything and open settings
+      if (_currentAppState != AppState.settings) {
+        _currentAppState = AppState.settings;
+      }
+    });
+  }
+
+  void _closeSettings() {
+    setState(() {
+      // Close settings. Called when user presses X button
+      if (_currentAppState != AppState.menu) {
+        _currentAppState = AppState.menu;
+      }
     });
   }
 
@@ -61,18 +72,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     final settingsHeight = screenHeight * 0.75;
     final settingsWidth = screenWidth * 0.75;
 
     return Scaffold(
+      backgroundColor: colorScheme.primary,
       body: Stack(children: [
         // In the menu or settings states, show the menu options
         if (_currentAppState == AppState.menu ||
             _currentAppState == AppState.settings)
           const Center(
-            child: MenuOptions(),
+            child: Menu(),
           ),
 
         // In the settings state, blur the entire screen with an opacity
@@ -93,13 +107,19 @@ class _HomePageState extends State<HomePage> {
               ? (screenHeight / 2 - settingsHeight / 2)
               : screenHeight,
           left: (screenWidth / 2 - settingsWidth / 2),
-          duration: const Duration(milliseconds: 200),
-          child: Settings(height: settingsHeight, width: settingsWidth),
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+          child: Settings(
+            height: settingsHeight,
+            width: settingsWidth,
+            closeCallback: _closeSettings,
+          ),
         ),
       ]),
       floatingActionButton: FloatingActionButton(
         onPressed: _openSettings,
         tooltip: 'Settings',
+        backgroundColor: colorScheme.secondary,
         child: const Icon(Icons.settings),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MenuOptions extends StatelessWidget {
-  const MenuOptions({super.key});
+class Menu extends StatelessWidget {
+  const Menu({super.key});
 
   static const buttonSpacing = 8.0;
   static const buttonPadding = 12.0;
@@ -9,11 +9,32 @@ class MenuOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textStyle = theme.textTheme.displayMedium;
+    final colorScheme = theme.colorScheme;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    final buttonStyle = ElevatedButton.styleFrom(
+        backgroundColor: colorScheme.onPrimary,
+        textStyle: theme.textTheme.displaySmall,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.all(buttonPadding),
+        minimumSize: Size(screenWidth * 0.8, 0));
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        // Title
+        Padding(
+          padding: const EdgeInsets.only(bottom: buttonSpacing * 10),
+          child: Text(
+            "Guitar Buddy",
+            style: theme.textTheme.displayLarge!.copyWith(
+              color: colorScheme.secondary,
+              fontFamily: 'Georgia', // Set the font family
+            ),
+          ),
+        ),
+
+        // Buttons
         Padding(
             padding: const EdgeInsets.only(
                 top: buttonSpacing, bottom: 2 * buttonSpacing),
@@ -21,11 +42,11 @@ class MenuOptions extends StatelessWidget {
               onPressed: () {
                 print('Melody Spark');
               },
-              child: Padding(
-                padding: const EdgeInsets.all(buttonPadding),
+              style: buttonStyle,
+              child: const Padding(
+                padding: EdgeInsets.all(buttonPadding),
                 child: Text(
                   'Melody Spark',
-                  style: textStyle,
                 ),
               ),
             )),
@@ -35,11 +56,11 @@ class MenuOptions extends StatelessWidget {
               onPressed: () {
                 print('Tuner');
               },
-              child: Padding(
-                padding: const EdgeInsets.all(buttonPadding),
+              style: buttonStyle,
+              child: const Padding(
+                padding: EdgeInsets.all(buttonPadding),
                 child: Text(
                   'Tuner',
-                  style: textStyle,
                 ),
               )),
         ),
@@ -50,11 +71,11 @@ class MenuOptions extends StatelessWidget {
             onPressed: () {
               print('Learn the Fretboard');
             },
-            child: Padding(
-              padding: const EdgeInsets.all(buttonPadding),
+            style: buttonStyle,
+            child: const Padding(
+              padding: EdgeInsets.all(buttonPadding),
               child: Text(
                 'Learn The Fretboard',
-                style: textStyle,
               ),
             ),
           ),
