@@ -1,5 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
+import 'menu_options.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,11 +41,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const buttonSpacing = 8.0;
-
   void _openSettings() {
     setState(() {
       // Grey out everything and open settings
+      print('Settings');
     });
   }
 
@@ -79,24 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(bottom: buttonSpacing),
-                child: ElevatedButton(
-                  onPressed: _launchMelodySpark,
-                  child: const Text('Melody Spark'),
-                )),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: buttonSpacing),
-              child: ElevatedButton(
-                onPressed: _launchTuner,
-                child: const Text('Tuner'),
-              ),
-            ),
-          ],
-        ),
+        child: MenuOptions(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _openSettings,
