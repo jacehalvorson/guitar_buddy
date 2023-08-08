@@ -5,7 +5,10 @@
 - ~~Buttons for modes listed below~~
 - Background music (John Frusciante?)
 - ~~Settings icon~~
+- ~~Settings Transitions~~
 - Settings page
+- Position Title
+- Find good font and color for title
 
 ### Melody Spark
 - Design scrollable fretboard

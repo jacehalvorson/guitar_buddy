@@ -61,29 +61,41 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final settingsHeight = screenHeight * 0.75;
+    final settingsWidth = screenWidth * 0.75;
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Center(
-          child: Text(widget.title),
-        ),
-      ),
       body: Stack(children: [
         // In the menu or settings states, show the menu options
         if (_currentAppState == AppState.menu ||
-            _currentAppState == AppState.settings) ...[
+            _currentAppState == AppState.settings)
           const Center(
             child: MenuOptions(),
           ),
-        ],
 
-        // In the settings state, blur the entire screen and open settings page
-        if (_currentAppState == AppState.settings) ...[
-          const BlurredOverlay(),
-          const Center(
-            child: Settings(),
-          ),
-        ]
+        // In the settings state, blur the entire screen with an opacity
+        // transition stacked on the menu options
+        AnimatedOpacity(
+          opacity: (_currentAppState == AppState.settings) ? 1 : 0,
+          duration: const Duration(milliseconds: 200),
+          child: (_currentAppState == AppState.settings)
+              ? const BlurredOverlay()
+              : const IgnorePointer(
+                  child: BlurredOverlay(),
+                ),
+        ),
+
+        // In the settings state, open settings page
+        AnimatedPositioned(
+          top: (_currentAppState == AppState.settings)
+              ? (screenHeight / 2 - settingsHeight / 2)
+              : screenHeight,
+          left: (screenWidth / 2 - settingsWidth / 2),
+          duration: const Duration(milliseconds: 200),
+          child: Settings(height: settingsHeight, width: settingsWidth),
+        ),
       ]),
       floatingActionButton: FloatingActionButton(
         onPressed: _openSettings,
