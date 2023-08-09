@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'types.dart';
 
 class Menu extends StatelessWidget {
-  const Menu({super.key});
+  const Menu({super.key, required this.changeAppStateCallback});
+
+  final void Function(AppState) changeAppStateCallback;
 
   static const buttonSpacing = 8.0;
   static const buttonPadding = 12.0;
@@ -40,7 +43,7 @@ class Menu extends StatelessWidget {
                 top: buttonSpacing, bottom: 2 * buttonSpacing),
             child: ElevatedButton(
               onPressed: () {
-                print('Melody Spark');
+                changeAppStateCallback(AppState.melodySpark);
               },
               style: buttonStyle,
               child: const Padding(
@@ -54,7 +57,7 @@ class Menu extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: buttonSpacing),
           child: ElevatedButton(
               onPressed: () {
-                print('Tuner');
+                changeAppStateCallback(AppState.tuner);
               },
               style: buttonStyle,
               child: const Padding(
@@ -69,7 +72,7 @@ class Menu extends StatelessWidget {
               top: buttonSpacing, bottom: 2 * buttonSpacing),
           child: ElevatedButton(
             onPressed: () {
-              print('Learn the Fretboard');
+              changeAppStateCallback(AppState.learnTheFretboard);
             },
             style: buttonStyle,
             child: const Padding(

@@ -40,33 +40,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   AppState _currentAppState = AppState.menu;
 
-  void _openSettings() {
+  void _changeAppState(AppState newState) {
     setState(() {
-      // Blur everything and open settings
-      if (_currentAppState != AppState.settings) {
-        _currentAppState = AppState.settings;
-      }
-    });
-  }
-
-  void _closeSettings() {
-    setState(() {
-      // Close settings. Called when user presses X button
-      if (_currentAppState != AppState.menu) {
-        _currentAppState = AppState.menu;
-      }
-    });
-  }
-
-  void _launchMelodySpark() {
-    setState(() {
-      // Switch states to Melody Spark
-    });
-  }
-
-  void _launchTuner() {
-    setState(() {
-      // Switch states to Tuner
+      _currentAppState = newState;
+      print('New state: $_currentAppState');
     });
   }
 
@@ -85,8 +62,8 @@ class _HomePageState extends State<HomePage> {
         // In the menu or settings states, show the menu options
         if (_currentAppState == AppState.menu ||
             _currentAppState == AppState.settings)
-          const Center(
-            child: Menu(),
+          Center(
+            child: Menu(changeAppStateCallback: _changeAppState),
           ),
 
         // In the settings state, blur the entire screen with an opacity
@@ -112,12 +89,16 @@ class _HomePageState extends State<HomePage> {
           child: Settings(
             height: settingsHeight,
             width: settingsWidth,
-            closeCallback: _closeSettings,
+            closeCallback: () {
+              _changeAppState(AppState.menu);
+            },
           ),
         ),
       ]),
       floatingActionButton: FloatingActionButton(
-        onPressed: _openSettings,
+        onPressed: () {
+          _changeAppState(AppState.settings);
+        },
         tooltip: 'Settings',
         backgroundColor: colorScheme.secondary,
         child: const Icon(Icons.settings),

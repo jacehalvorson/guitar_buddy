@@ -9,6 +9,8 @@
 - ~~Settings page~~
 - ~~Position Title~~
 - ~~Find good font and color for title~~
+- ~~State Management~~
+- Transition menu to features
 
 ### Melody Spark
 - Design scrollable fretboard

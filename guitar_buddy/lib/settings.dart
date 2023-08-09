@@ -42,8 +42,7 @@ class _SettingsState extends State<Settings> {
             children: [
               // Settings title
               Container(
-                padding: const EdgeInsets.only(
-                    top: 32, bottom: 32), // Adjust top and bottom padding
+                padding: const EdgeInsets.only(top: 32, bottom: 32),
                 child: Center(
                   child: Text(
                     'Settings',

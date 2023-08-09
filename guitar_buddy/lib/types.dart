@@ -1,1 +1,1 @@
-enum AppState { menu, settings, melodySpark, tuner, learn }
+enum AppState { menu, settings, melodySpark, tuner, learnTheFretboard }
