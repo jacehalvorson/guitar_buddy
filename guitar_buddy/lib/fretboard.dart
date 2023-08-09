@@ -10,6 +10,14 @@ class Fretboard extends StatefulWidget {
 class _FretboardState extends State<Fretboard> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      width: screenWidth * 0.6,
+      height: screenHeight * 0.9,
+      color: Theme.of(context).colorScheme.primary,
+      child: const Center(child: Text('Fretboard')),
+    );
   }
 }

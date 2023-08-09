@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'menu.dart';
 import 'settings.dart';
 import 'types.dart';
+import 'melody_spark.dart';
 
 void main() {
   runApp(const MyApp());
@@ -94,6 +95,12 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ),
+
+        // In the melody spark state, show the melody spark page
+        if (_currentAppState == AppState.melodySpark)
+          const Center(
+            child: MelodySpark(),
+          ),
       ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

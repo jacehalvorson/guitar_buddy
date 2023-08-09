@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'fretboard.dart';
+
 class MelodySpark extends StatefulWidget {
   const MelodySpark({Key? key}) : super(key: key);
 
@@ -10,6 +12,11 @@ class MelodySpark extends StatefulWidget {
 class _MelodySparkState extends State<MelodySpark> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Theme.of(context).colorScheme.secondary,
+      child: const Center(child: Fretboard()),
+    );
   }
 }
