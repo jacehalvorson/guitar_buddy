@@ -5,6 +5,7 @@ import 'menu.dart';
 import 'settings.dart';
 import 'types.dart';
 import 'melody_spark.dart';
+import 'menu_background.dart';
 
 void main() {
   runApp(const MyApp());
@@ -60,12 +61,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: colorScheme.primary,
       body: Stack(children: [
-        // In the menu or settings states, show the menu options
+        // In the menu or settings states, show the menu options and background
         if (_currentAppState == AppState.menu ||
-            _currentAppState == AppState.settings)
+            _currentAppState == AppState.settings) ...[
+          // const Text('Hello world!'),
+          const MenuBackground(),
           Center(
             child: Menu(changeAppStateCallback: _changeAppState),
           ),
+        ],
 
         // In the settings state, blur the entire screen with an opacity
         // transition stacked on the menu options
