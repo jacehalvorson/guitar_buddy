@@ -41,6 +41,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   AppState _currentAppState = AppState.menu;
+  bool _isSettingsOpen = false;
 
   void _changeAppState(AppState newState) {
     setState(() {
@@ -58,25 +59,38 @@ class _HomePageState extends State<HomePage> {
     final settingsHeight = screenHeight * 0.75;
     final settingsWidth = screenWidth * 0.75;
 
+    void toggleSettings() {
+      setState(() {
+        _isSettingsOpen = !_isSettingsOpen;
+      });
+    }
+
     return Scaffold(
       backgroundColor: colorScheme.primary,
       body: Stack(children: [
-        // In the menu or settings states, show the menu options and background
-        if (_currentAppState == AppState.menu ||
-            _currentAppState == AppState.settings) ...[
-          // const Text('Hello world!'),
-          const MenuBackground(),
+        // Background video with overlay effects
+        const MenuBackground(),
+
+        // In the menu state, show the menu options and background
+        if (_currentAppState == AppState.menu)
           Center(
             child: Menu(changeAppStateCallback: _changeAppState),
           ),
-        ],
+
+        // In the melody spark state, show the melody spark page
+        if (_currentAppState == AppState.melodySpark)
+          Center(
+            child: MelodySpark(closeCallback: () {
+              _changeAppState(AppState.menu);
+            }),
+          ),
 
         // In the settings state, blur the entire screen with an opacity
         // transition stacked on the menu options
         AnimatedOpacity(
-          opacity: (_currentAppState == AppState.settings) ? 1 : 0,
+          opacity: (_isSettingsOpen == true) ? 1 : 0,
           duration: const Duration(milliseconds: 200),
-          child: (_currentAppState == AppState.settings)
+          child: (_isSettingsOpen == true)
               ? const BlurredOverlay()
               : const IgnorePointer(
                   child: BlurredOverlay(),
@@ -85,7 +99,7 @@ class _HomePageState extends State<HomePage> {
 
         // In the settings state, open settings page
         AnimatedPositioned(
-          top: (_currentAppState == AppState.settings)
+          top: (_isSettingsOpen == true)
               ? (screenHeight / 2 - settingsHeight / 2)
               : screenHeight,
           left: (screenWidth / 2 - settingsWidth / 2),
@@ -94,22 +108,12 @@ class _HomePageState extends State<HomePage> {
           child: Settings(
             height: settingsHeight,
             width: settingsWidth,
-            closeCallback: () {
-              _changeAppState(AppState.menu);
-            },
+            closeCallback: toggleSettings,
           ),
         ),
-
-        // In the melody spark state, show the melody spark page
-        if (_currentAppState == AppState.melodySpark)
-          const Center(
-            child: MelodySpark(),
-          ),
       ]),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _changeAppState(AppState.settings);
-        },
+        onPressed: toggleSettings,
         tooltip: 'Settings',
         backgroundColor: colorScheme.secondary,
         child: const Icon(Icons.settings),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+const NUM_FRETS = 23;
+const FDIV = 17.817;
+
 // Holds the "marked frets" for each string.
 // These will be used to display notes on the fretboard.
 class NoteList {
@@ -38,12 +41,9 @@ class _FretboardState extends State<Fretboard> {
 
     // Length from nut to saddle
     final scaleLength = fretboardHeight * 1.23;
-    // Fret division factor
-    const fdiv = 17.817;
-    const numFrets = 23;
 
     final List<double> fretWidths =
-        calculateFretWidths(scaleLength, fdiv, numFrets);
+        calculateFretWidths(scaleLength, FDIV, NUM_FRETS);
 
     return Container(
         width: fretboardWidth,
@@ -52,24 +52,15 @@ class _FretboardState extends State<Fretboard> {
         child: Center(
             child: Stack(children: [
           // Fret lines
-          Column(
-            children: List.generate(numFrets + 1, (index) {
-              return Padding(
-                  padding: (index < numFrets)
-                      ? EdgeInsets.only(bottom: fretWidths[index])
-                      : EdgeInsets.zero,
-                  child: Container(
-                      height: 2,
-                      width: fretboardWidth,
-                      color: Colors.grey[800]));
-            }),
-          ),
+          FretLines(fretWidths: fretWidths, fretboardWidth: fretboardWidth),
 
           // Strings
           GuitarStrings(
-              markedFrets: widget.markedFrets,
-              fretboardHeight: fretboardHeight,
-              fretboardWidth: fretboardWidth),
+            markedFrets: widget.markedFrets,
+            fretboardHeight: fretboardHeight,
+            fretboardWidth: fretboardWidth,
+            fretWidths: fretWidths,
+          ),
         ])));
   }
 }
@@ -93,17 +84,42 @@ List<double> calculateFretWidths(
   return fretWidths;
 }
 
+class FretLines extends StatelessWidget {
+  const FretLines(
+      {Key? key, required this.fretboardWidth, required this.fretWidths})
+      : super(key: key);
+
+  final double fretboardWidth;
+  final List<double> fretWidths;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: List.generate(NUM_FRETS + 1, (index) {
+        return Padding(
+            padding: (index < NUM_FRETS)
+                ? EdgeInsets.only(bottom: fretWidths[index])
+                : EdgeInsets.zero,
+            child: Container(
+                height: 2, width: fretboardWidth, color: Colors.grey[800]));
+      }),
+    );
+  }
+}
+
 class GuitarStrings extends StatefulWidget {
   const GuitarStrings(
       {Key? key,
       required this.markedFrets,
       required this.fretboardHeight,
-      required this.fretboardWidth})
+      required this.fretboardWidth,
+      required this.fretWidths})
       : super(key: key);
 
   final NoteList markedFrets;
   final double fretboardWidth;
   final double fretboardHeight;
+  final List<double> fretWidths;
 
   @override
   State<GuitarStrings> createState() => _GuitarStringsState();
