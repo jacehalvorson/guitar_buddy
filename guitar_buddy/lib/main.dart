@@ -6,6 +6,7 @@ import 'settings.dart';
 import 'types.dart';
 import 'melody_spark.dart';
 import 'menu_background.dart';
+import 'utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -113,23 +114,6 @@ class _HomePageState extends State<HomePage> {
         tooltip: 'Settings',
         backgroundColor: colorScheme.secondary,
         child: const Icon(Icons.settings),
-      ),
-    );
-  }
-}
-
-class BlurredOverlay extends StatelessWidget {
-  const BlurredOverlay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BackdropFilter(
-      filter:
-          ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0), // Adjust blur intensity
-      child: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.transparent, // Color with reduced opacity
       ),
     );
   }
