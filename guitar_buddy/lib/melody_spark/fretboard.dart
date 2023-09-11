@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 const NUM_FRETS = 23;
 const FDIV = 17.817;
+const FRET_MARKER_DIAMETER = 20.0;
 
 // Holds the "marked frets" for each string.
 // These will be used to display notes on the fretboard.
@@ -128,15 +129,42 @@ class GuitarStrings extends StatefulWidget {
 class _GuitarStringsState extends State<GuitarStrings> {
   @override
   Widget build(BuildContext context) {
+    // Print the marked frets for each string
+    print('E: ' + widget.markedFrets.E.toString());
+    print('A: ' + widget.markedFrets.A.toString());
+    print('D: ' + widget.markedFrets.D.toString());
+    print('G: ' + widget.markedFrets.G.toString());
+    print('B: ' + widget.markedFrets.B.toString());
+    print('e: ' + widget.markedFrets.e.toString());
+
     return Row(
       children: List.generate(6, (index) {
-        return Padding(
-            padding: EdgeInsets.only(left: widget.fretboardWidth / 7.2),
-            child: Container(
-              height: widget.fretboardHeight,
-              width: 2,
-              color: Colors.white,
-            ));
+        double stringLeftPadding = widget.fretboardWidth / 7.2;
+
+        return Stack(children: [
+          // String
+          Padding(
+              padding: EdgeInsets.only(left: stringLeftPadding),
+              child: Container(
+                height: widget.fretboardHeight,
+                width: 2,
+                color: Colors.white,
+              )),
+
+          // For Each note on the string
+          ...List.generate(widget.markedFrets.E.length, (index) {
+            return Positioned(
+                left: 20,
+                top: widget.fretWidths[widget.markedFrets.E[index]],
+                child: Container(
+                    height: FRET_MARKER_DIAMETER,
+                    width: FRET_MARKER_DIAMETER,
+                    decoration: BoxDecoration(
+                        color: Colors.amber.shade700,
+                        borderRadius:
+                            BorderRadius.circular(FRET_MARKER_DIAMETER / 2))));
+          }),
+        ]);
       }),
     );
   }

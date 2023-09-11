@@ -20,7 +20,7 @@ class _MelodySparkState extends State<MelodySpark> {
       // This secondary stack is only to expand the fretboard to the full screen
       Stack(fit: StackFit.expand, children: [
         // Melody Spark fretboard
-        Center(child: Fretboard(markedFrets: noMarkedFrets)),
+        Center(child: Fretboard(markedFrets: markedFrets2)),
       ]),
 
       // Exit button, pass down close callback

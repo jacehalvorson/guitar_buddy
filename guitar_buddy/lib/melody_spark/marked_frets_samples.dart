@@ -59,3 +59,12 @@ NoteList markedFrets1 = NoteList(
     17,
   ],
 );
+
+NoteList markedFrets2 = NoteList(
+  E: [2],
+  A: [],
+  D: [],
+  G: [],
+  B: [],
+  e: [],
+);

@@ -1,7 +1,7 @@
 # To-do List
 
 ### Home screen
-- Sleek looking background
+- ~~Sleek looking background~~
 - ~~Buttons for modes listed below~~
 - Background music (John Frusciante?)
 - ~~Settings icon~~
@@ -10,11 +10,15 @@
 - ~~Position Title~~
 - ~~Find good font and color for title~~
 - ~~State Management~~
+- ~~Improve state management~~
 - Transition menu to features
 
+
 ### Melody Spark
-- Design scrollable fretboard
-- Display notes on freatboard
+- ~~Design fretboard~~
+- Make fretboard scrollable
+- ~~Supporting structure for marked frets~~
+- Have fretboard display arbitrary notes
 - Customize backing track button
 - Customize backing track screen
 - Learn about MIDI interactions
