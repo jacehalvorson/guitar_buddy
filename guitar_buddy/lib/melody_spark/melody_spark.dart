@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'fretboard.dart';
+import 'marked_frets_samples.dart';
 
 class MelodySpark extends StatefulWidget {
   const MelodySpark({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class _MelodySparkState extends State<MelodySpark> {
       width: double.infinity,
       height: double.infinity,
       color: Theme.of(context).colorScheme.secondary,
-      child: const Center(child: Fretboard()),
+      child: Center(child: Fretboard(markedFrets: noMarkedFrets)),
     );
   }
 }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
 import 'menu.dart';
 import 'settings.dart';
 import 'types.dart';
-import 'melody_spark.dart';
+import 'melody_spark/melody_spark.dart';
 import 'menu_background.dart';
 import 'utils.dart';
 
@@ -21,9 +20,9 @@ class MyApp extends StatelessWidget {
       title: 'Guitar Buddy',
       theme: ThemeData(
         colorScheme: const ColorScheme.dark(
-          primary: Color.fromRGBO(20, 20, 20, 1),
-          secondary: Color.fromARGB(255, 31, 131, 212),
-        ),
+            primary: Color.fromRGBO(20, 20, 20, 1),
+            secondary: Colors.white //fromARGB(255, 31, 131, 212),
+            ),
         useMaterial3: true,
       ),
       home: const HomePage(title: 'Guitar Buddy'),
