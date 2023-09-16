@@ -17,3 +17,17 @@ class BlurredOverlay extends StatelessWidget {
     );
   }
 }
+
+class BackToHome extends StatelessWidget {
+  const BackToHome({super.key, required this.onPressedCallback});
+
+  final void Function() onPressedCallback;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: onPressedCallback,
+    );
+  }
+}
