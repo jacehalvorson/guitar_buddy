@@ -1,16 +1,17 @@
 import 'fretboard.dart';
+import 'dart:math';
 
-NoteList noMarkedFrets = NoteList(
-  E: [],
-  A: [],
-  D: [],
-  G: [],
-  B: [],
-  e: [],
-);
+NoteList noMarkedFrets = {
+  0: [],
+  1: [],
+  2: [],
+  3: [],
+  4: [],
+  5: [],
+};
 
-NoteList markedFrets1 = NoteList(
-  E: [
+NoteList markedFrets1 = {
+  0: [
     0,
     3,
     5,
@@ -18,7 +19,7 @@ NoteList markedFrets1 = NoteList(
     9,
     12,
   ],
-  A: [
+  1: [
     1,
     4,
     6,
@@ -26,7 +27,7 @@ NoteList markedFrets1 = NoteList(
     10,
     13,
   ],
-  D: [
+  2: [
     2,
     5,
     7,
@@ -34,7 +35,7 @@ NoteList markedFrets1 = NoteList(
     11,
     14,
   ],
-  G: [
+  3: [
     3,
     6,
     8,
@@ -42,7 +43,7 @@ NoteList markedFrets1 = NoteList(
     12,
     15,
   ],
-  B: [
+  4: [
     4,
     7,
     9,
@@ -50,7 +51,7 @@ NoteList markedFrets1 = NoteList(
     13,
     16,
   ],
-  e: [
+  5: [
     5,
     8,
     10,
@@ -58,13 +59,20 @@ NoteList markedFrets1 = NoteList(
     14,
     17,
   ],
-);
+};
 
-NoteList markedFrets2 = NoteList(
-  E: [2],
-  A: [],
-  D: [],
-  G: [],
-  B: [],
-  e: [],
-);
+NoteList markedFrets2 = {
+  0: [2],
+  1: [],
+  2: [],
+  3: [],
+  4: [],
+  5: [],
+};
+
+// Generate a random integer between min and max (inclusive)
+int randomInt(int min, int max) => Random().nextInt(max - min + 1) + min;
+// Use randomInt function to display random notes
+NoteList randomMarkedFrets = {
+  for (int i = 0; i < 6; i++) i: List.generate(6, (_) => randomInt(0, 20)),
+};

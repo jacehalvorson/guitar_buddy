@@ -7,22 +7,16 @@ const FRET_LINE_HEIGHT = 2;
 
 // Holds the "marked frets" for each string.
 // These will be used to display notes on the fretboard.
-class NoteList {
-  List<int> E = [];
-  List<int> A = [];
-  List<int> D = [];
-  List<int> G = [];
-  List<int> B = [];
-  List<int> e = [];
+typedef NoteList = Map<int, List<int>>;
 
-  NoteList(
-      {required this.E,
-      required this.A,
-      required this.D,
-      required this.G,
-      required this.B,
-      required this.e});
-}
+final NoteList noteLists = {
+  0: [], // E
+  1: [], // A
+  2: [], // D
+  3: [], // G
+  4: [], // B
+  5: [], // e
+};
 
 class Fretboard extends StatefulWidget {
   const Fretboard({Key? key, required this.markedFrets}) : super(key: key);
@@ -70,14 +64,17 @@ class _FretboardState extends State<Fretboard> {
 List<double> calculateFretWidths(
     double scaleLength, double fdiv, int numFrets) {
   // Width of first fret https://archive.siam.org/careers/pdf/guitar.pdf
-  double previousFretPosition = scaleLength / fdiv;
+  final double firstFretPosition = scaleLength / fdiv;
+  double previousFretPosition = firstFretPosition;
+  double fretPosition;
+  double fretWidth;
 
-  List<double> fretWidths = [0, previousFretPosition];
+  List<double> fretWidths = [0, firstFretPosition];
 
-  for (int fretNumber = 1; fretNumber < numFrets; fretNumber++) {
-    var fretPosition =
+  for (int fretNumber = 2; fretNumber < numFrets; fretNumber++) {
+    fretPosition =
         ((scaleLength - previousFretPosition) / fdiv) + previousFretPosition;
-    var fretWidth = fretPosition - previousFretPosition;
+    fretWidth = fretPosition - previousFretPosition;
 
     fretWidths.add(fretWidth);
     previousFretPosition = fretPosition;
@@ -97,7 +94,7 @@ class FretLines extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: List.generate(NUM_FRETS + 1, (index) {
+      children: List.generate(NUM_FRETS, (index) {
         return Padding(
             padding: EdgeInsets.only(top: fretWidths[index]),
             child: Container(
@@ -128,38 +125,28 @@ class GuitarStrings extends StatefulWidget {
 class _GuitarStringsState extends State<GuitarStrings> {
   @override
   Widget build(BuildContext context) {
-    // Print the marked frets for each string
-    print('E: ${widget.markedFrets.E}');
-    print('A: ${widget.markedFrets.A}');
-    print('D: ${widget.markedFrets.D}');
-    print('G: ${widget.markedFrets.G}');
-    print('B: ${widget.markedFrets.B}');
-    print('e: ${widget.markedFrets.e}');
-
-    double distanceBetweenStrings = widget.fretboardWidth / 7.3;
+    // Calculate the horizontal padding for strings (half the distance between)
+    double stringPadding = widget.fretboardWidth / 14.6;
 
     // Get the absolute distance from nut of each fret using fretWidths
     List<double> fretPositions = [0];
-    widget.fretWidths.forEach((element) {
-      final index = widget.fretWidths.indexOf(element);
-
-      if (index > 0) {
-        fretPositions
-            .add(element + fretPositions[index - 1] + FRET_LINE_HEIGHT);
-      }
-    });
-    print('fretPositions: $fretPositions');
-    print('fretWidths: ${widget.fretWidths}');
+    for (int fretNumber = 1;
+        fretNumber < widget.fretWidths.length;
+        fretNumber++) {
+      double fretWidth = widget.fretWidths[fretNumber];
+      fretPositions
+          .add(fretWidth + fretPositions[fretNumber - 1] + FRET_LINE_HEIGHT);
+    }
 
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: distanceBetweenStrings / 2),
+        padding: EdgeInsets.symmetric(horizontal: stringPadding),
         child: Row(
-          children: List.generate(6, (index) {
+          // For each string
+          children: List.generate(6, (stringIndex) {
             return Stack(children: [
               // String
               Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: distanceBetweenStrings / 2),
+                  padding: EdgeInsets.symmetric(horizontal: stringPadding),
                   child: Container(
                     height: widget.fretboardHeight,
                     width: 2,
@@ -167,10 +154,14 @@ class _GuitarStringsState extends State<GuitarStrings> {
                   )),
 
               // For Each note on the string
-              ...List.generate(widget.markedFrets.E.length, (index) {
-                final int fretNumber = widget.markedFrets.E[index];
+              ...List.generate(widget.markedFrets[stringIndex]!.length,
+                  (markedFretIndex) {
+                // Select string based on markedFretIndex
+                final int fretNumber =
+                    widget.markedFrets[stringIndex]![markedFretIndex];
 
-                // Calculate offsets to position icon from its middle rather than edge
+                // Calculate offsets to position icon from its middle rather
+                // than from its edge
                 const double noteMidpointOffset = FRET_MARKER_DIAMETER / 2;
                 final double fretMidpointOffset =
                     widget.fretWidths[fretNumber] / 2;
@@ -180,9 +171,10 @@ class _GuitarStringsState extends State<GuitarStrings> {
                     noteMidpointOffset -
                     fretMidpointOffset;
 
-                // TODO adjust based on which string is current
-                final double noteDistanceFromLeft =
-                    distanceBetweenStrings / 2 - noteMidpointOffset;
+                // Spacing from left of neck based on which string
+                final double noteDistanceFromLeft = (stringPadding) +
+                    ((stringPadding * stringIndex) / 128) -
+                    noteMidpointOffset;
 
                 return Positioned(
                     top: noteDistanceFromTop,
