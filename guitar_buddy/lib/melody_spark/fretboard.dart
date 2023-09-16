@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const NUM_FRETS = 23;
 const FDIV = 17.817;
 const FRET_MARKER_DIAMETER = 20.0;
+const FRET_LINE_HEIGHT = 2;
 
 // Holds the "marked frets" for each string.
 // These will be used to display notes on the fretboard.
@@ -71,9 +72,9 @@ List<double> calculateFretWidths(
   // Width of first fret https://archive.siam.org/careers/pdf/guitar.pdf
   double previousFretPosition = scaleLength / fdiv;
 
-  final fretWidths = <double>[previousFretPosition];
+  List<double> fretWidths = [0, previousFretPosition];
 
-  for (var i = 1; i < numFrets; i++) {
+  for (int fretNumber = 1; fretNumber < numFrets; fretNumber++) {
     var fretPosition =
         ((scaleLength - previousFretPosition) / fdiv) + previousFretPosition;
     var fretWidth = fretPosition - previousFretPosition;
@@ -98,9 +99,7 @@ class FretLines extends StatelessWidget {
     return Column(
       children: List.generate(NUM_FRETS + 1, (index) {
         return Padding(
-            padding: (index < NUM_FRETS)
-                ? EdgeInsets.only(bottom: fretWidths[index])
-                : EdgeInsets.zero,
+            padding: EdgeInsets.only(top: fretWidths[index]),
             child: Container(
                 height: 2, width: fretboardWidth, color: Colors.grey[800]));
       }),
@@ -130,42 +129,74 @@ class _GuitarStringsState extends State<GuitarStrings> {
   @override
   Widget build(BuildContext context) {
     // Print the marked frets for each string
-    print('E: ' + widget.markedFrets.E.toString());
-    print('A: ' + widget.markedFrets.A.toString());
-    print('D: ' + widget.markedFrets.D.toString());
-    print('G: ' + widget.markedFrets.G.toString());
-    print('B: ' + widget.markedFrets.B.toString());
-    print('e: ' + widget.markedFrets.e.toString());
+    print('E: ${widget.markedFrets.E}');
+    print('A: ${widget.markedFrets.A}');
+    print('D: ${widget.markedFrets.D}');
+    print('G: ${widget.markedFrets.G}');
+    print('B: ${widget.markedFrets.B}');
+    print('e: ${widget.markedFrets.e}');
 
-    return Row(
-      children: List.generate(6, (index) {
-        double stringLeftPadding = widget.fretboardWidth / 7.2;
+    double distanceBetweenStrings = widget.fretboardWidth / 7.3;
 
-        return Stack(children: [
-          // String
-          Padding(
-              padding: EdgeInsets.only(left: stringLeftPadding),
-              child: Container(
-                height: widget.fretboardHeight,
-                width: 2,
-                color: Colors.white,
-              )),
+    // Get the absolute distance from nut of each fret using fretWidths
+    List<double> fretPositions = [0];
+    widget.fretWidths.forEach((element) {
+      final index = widget.fretWidths.indexOf(element);
 
-          // For Each note on the string
-          ...List.generate(widget.markedFrets.E.length, (index) {
-            return Positioned(
-                left: 20,
-                top: widget.fretWidths[widget.markedFrets.E[index]],
-                child: Container(
-                    height: FRET_MARKER_DIAMETER,
-                    width: FRET_MARKER_DIAMETER,
-                    decoration: BoxDecoration(
-                        color: Colors.amber.shade700,
-                        borderRadius:
-                            BorderRadius.circular(FRET_MARKER_DIAMETER / 2))));
+      if (index > 0) {
+        fretPositions
+            .add(element + fretPositions[index - 1] + FRET_LINE_HEIGHT);
+      }
+    });
+    print('fretPositions: $fretPositions');
+    print('fretWidths: ${widget.fretWidths}');
+
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: distanceBetweenStrings / 2),
+        child: Row(
+          children: List.generate(6, (index) {
+            return Stack(children: [
+              // String
+              Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: distanceBetweenStrings / 2),
+                  child: Container(
+                    height: widget.fretboardHeight,
+                    width: 2,
+                    color: Colors.white,
+                  )),
+
+              // For Each note on the string
+              ...List.generate(widget.markedFrets.E.length, (index) {
+                final int fretNumber = widget.markedFrets.E[index];
+
+                // Calculate offsets to position icon from its middle rather than edge
+                const double noteMidpointOffset = FRET_MARKER_DIAMETER / 2;
+                final double fretMidpointOffset =
+                    widget.fretWidths[fretNumber] / 2;
+
+                // Spacing from the nut to the icon for this fret number
+                final double noteDistanceFromTop = fretPositions[fretNumber] -
+                    noteMidpointOffset -
+                    fretMidpointOffset;
+
+                // TODO adjust based on which string is current
+                final double noteDistanceFromLeft =
+                    distanceBetweenStrings / 2 - noteMidpointOffset;
+
+                return Positioned(
+                    top: noteDistanceFromTop,
+                    left: noteDistanceFromLeft,
+                    child: Container(
+                        height: FRET_MARKER_DIAMETER,
+                        width: FRET_MARKER_DIAMETER,
+                        decoration: BoxDecoration(
+                            color: Colors.amber.shade700,
+                            borderRadius:
+                                BorderRadius.circular(noteMidpointOffset))));
+              }),
+            ]);
           }),
-        ]);
-      }),
-    );
+        ));
   }
 }
