@@ -21,8 +21,8 @@
 - Have fretboard display arbitrary notes
 - Customize backing track button
 - Customize backing track screen
-- Learn about MIDI interactions
-- Use MIDI to find scale degrees matching the backing track chord
+- ~~Learn about MIDI interactions~~
+- Import previous music logic
 - Make a clock with a tempo with chord changes
 
 ### Tuner
